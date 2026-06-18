@@ -424,7 +424,7 @@ find_next(struct terminal *term, enum search_direction direction,
     return false;
 }
 
-static void
+void
 search_find_next(struct terminal *term, enum search_direction direction)
 {
     struct grid *grid = term->grid;
