@@ -2146,6 +2146,8 @@ csi_dispatch(struct terminal *term, uint8_t final)
             if (slot == 0)
                 slot = term->color_stack.idx + 1;
 
+            slot = min(slot, 128);
+
             if (term->color_stack.size < slot) {
                 const size_t new_size = slot;
                 term->color_stack.stack = xrealloc(
