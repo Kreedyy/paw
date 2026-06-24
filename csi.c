@@ -1396,7 +1396,9 @@ csi_dispatch(struct terminal *term, uint8_t final)
             case 22: { /* push window title */
                 /* 0 - icon + title, 1 - icon, 2 - title */
                 unsigned what = vt_param_get(term, 1, 0);
-                if (what == 0 || what == 2) {
+                if ((what == 0 || what == 2) &&
+                    tll_length(term->window_title_stack) < 128)
+                {
                     tll_push_back(
                         term->window_title_stack, xstrdup(term->window_title));
                 }
