@@ -1769,10 +1769,10 @@ csi_dispatch(struct terminal *term, uint8_t final)
     case '<': {
         switch (final) {
         case 'u': {
-            int count = vt_param_get(term, 0, 1);
+            struct grid *grid = term->grid;
+            int count = min(vt_param_get(term, 0, 1),  ALEN(grid->kitty_kbd.flags));
             LOG_DBG("kitty kbd: popping %d levels of flags", count);
 
-            struct grid *grid = term->grid;
             uint8_t idx = grid->kitty_kbd.idx;
 
             for (int i = 0; i < count; i++) {
