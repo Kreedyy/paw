@@ -117,6 +117,8 @@
 * Crash in `--server` mode, when a tracked notification is closed
   after the associated terminal instance has been closed
   ([#2397][2397]).
+* Incorrect word boundary detection when selection words with a
+  multi-column character in the last column ([#2411][2411]).
 
 [2353]: https://codeberg.org/dnkl/foot/issues/2353
 [2352]: https://codeberg.org/dnkl/foot/issues/2352
@@ -126,6 +128,7 @@
 [2370]: https://codeberg.org/dnkl/foot/issues/2370
 [2364]: https://codeberg.org/dnkl/foot/issues/2364
 [2397]: https://codeberg.org/dnkl/foot/issues/2397
+[2411]: https://codeberg.org/dnkl/foot/issues/2411
 
 
 ### Security
