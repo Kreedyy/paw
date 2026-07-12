@@ -8,19 +8,14 @@
 static void *
 check_alloc(void *alloc)
 {
-    if (unlikely(alloc == NULL)) {
-        FATAL_ERROR(__func__, ENOMEM);
-    }
+    FATAL_ERROR_ON(alloc == NULL, ENOMEM);
     return alloc;
 }
 
 void *
 xmalloc(size_t size)
 {
-    if (unlikely(size == 0)) {
-        size = 1;
-    }
-    return check_alloc(malloc(size));
+    return check_alloc(malloc(likely(size) ? size : 1));
 }
 
 void *
@@ -72,9 +67,7 @@ xvasprintf_(char **strp, const char *format, va_list ap)
     va_list ap2;
     va_copy(ap2, ap);
     int n = vsnprintf(NULL, 0, format, ap2);
-    if (unlikely(n < 0)) {
-        FATAL_ERROR("vsnprintf", EILSEQ);
-    }
+    FATAL_ERROR_ON(n < 0, EILSEQ);
     va_end(ap2);
     *strp = xmalloc(n + 1);
     return vsnprintf(*strp, n + 1, format, ap);
