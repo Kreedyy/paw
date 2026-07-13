@@ -119,6 +119,8 @@
   ([#2397][2397]).
 * Incorrect word boundary detection when selection words with a
   multi-column character in the last column ([#2411][2411]).
+* `reallocarray()` is no longer required, so as to support platforms
+  where libc doesn't include it (e.g. Termux + Android API < 29).
 
 [2353]: https://codeberg.org/dnkl/foot/issues/2353
 [2352]: https://codeberg.org/dnkl/foot/issues/2352

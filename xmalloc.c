@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "xmalloc.h"
@@ -33,16 +34,18 @@ void *
 xrealloc(void *ptr, size_t size)
 {
     xassert(size != 0);
-    void *alloc = realloc(ptr, size);
-    return check_alloc(alloc);
+    return check_alloc(realloc(ptr, size));
 }
 
+// reallocarray(3) was only added to POSIX in Issue 8 (2024) and isn't
+// present on some platforms (e.g. Android API levels < 29), so this
+// function is both for portability and ENOMEM handling.
 void *
-xreallocarray(void *ptr, size_t n, size_t size)
+xreallocarray(void *ptr, size_t nmemb, size_t size)
 {
-    xassert(n != 0 && size != 0);
-    void *alloc = reallocarray(ptr, n, size);
-    return check_alloc(alloc);
+    FATAL_ERROR_ON(nmemb == 0 || size == 0, EINVAL);
+    FATAL_ERROR_ON(size > SIZE_MAX / nmemb, EOVERFLOW);
+    return xrealloc(ptr, nmemb * size);
 }
 
 char *
