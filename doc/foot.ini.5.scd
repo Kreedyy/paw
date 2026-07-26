@@ -730,19 +730,35 @@ xdgtoken=95ebdfe56e4f47ddb5bba9d7dc3a2c35
 			- the user triggered the first custom action, "1"
 	
 	Default: _notify-send++
-			--wait++
-			--app-name    ${app-id}++
-			--icon        ${app-id}++
-			--category    ${category}++
-			--urgency     ${urgency}++
-			--expire-time ${expire-time}++
-			--hint        STRING:image-path:${icon}++
-			--hint        BOOLEAN:suppress-sound:${muted}++
-			--hint        STRING:sound-name:${sound-name}++
-			--replace-id  ${replace-id}++
-			${action-argument}++
-			--print-id++
-			-- ${title} ${body}_.
+		--wait++
+		--app-name    ${app-id}++
+		--icon        ${app-id}++
+		--category    ${category}++
+		--urgency     ${urgency}++
+		--expire-time ${expire-time}++
+		--hint        STRING:image-path:${icon}++
+		--hint        BOOLEAN:suppress-sound:${muted}++
+		--hint        STRING:sound-name:${sound-name}++
+		--replace-id  ${replace-id}++
+		${action-argument}++
+		--print-id++
+		-- ${title} ${body}_.
+	
+	Alternative: **fyi** example configuration: _fyi++
+		--wait++
+		--app-name    ${app-id}++
+		--icon        ${app-id}++
+		--category    ${category}++
+		--urgency     ${urgency}++
+		--expire-time ${expire-time}++
+		--hint        string:image-path:${icon}++
+		--hint        boolean:suppress-sound:${muted}++
+		--hint        string:sound-name:${sound-name}++
+		--replaces    ${replace-id}++
+		${action-argument}++
+		--print-token++
+		-- ${title} ${body}_.
+
 
 *command-action-argument*
 	String to use with *command* to enable passing action/button names
