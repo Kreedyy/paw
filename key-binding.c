@@ -429,7 +429,7 @@ key_cmp(struct key_binding a, struct key_binding b)
      * the problem. But note that it is *just* a workaround, and I'm
      * not confident there aren't cases where it doesn't work.
      *
-     * See https://codeberg.org/dnkl/foot/issues/1280
+     * See https://codeberg.org/dnkl/paw/issues/1280
      */
 
     const int a_mod_count = __builtin_popcount(a.mods);

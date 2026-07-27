@@ -1,4 +1,4 @@
-project('foot', 'c',
+project('paw', 'c',
         version: '1.27.0',
         license: 'MIT',
         meson_version: '>=0.59.0',
@@ -75,7 +75,7 @@ endif
 
 add_project_arguments(
   ['-D_GNU_SOURCE=200809L',
-   '-DFOOT_DEFAULT_TERM="@0@"'.format(get_option('default-terminfo'))] +
+   '-DPAW_DEFAULT_TERM="@0@"'.format(get_option('default-terminfo'))] +
   (utmp_backend != 'none'
   ? ['-DUTMP_ADD="@0@"'.format(utmp_add),
      '-DUTMP_DEL="@0@"'.format(utmp_del),
@@ -88,10 +88,10 @@ add_project_arguments(
     ? ['-D_DEBUG']
    : [cc.get_supported_arguments('-fno-asynchronous-unwind-tables')]) +
   (get_option('ime')
-    ? ['-DFOOT_IME_ENABLED=1']
+    ? ['-DPAW_IME_ENABLED=1']
     : []) +
   (get_option('b_pgo') == 'use'
-    ? ['-DFOOT_PGO_ENABLED=1']
+    ? ['-DPAW_PGO_ENABLED=1']
     : []) +
   cc.get_supported_arguments(
     ['-pedantic',
@@ -107,7 +107,7 @@ terminfo_install_location = get_option('custom-terminfo-install-location')
 
 if terminfo_install_location != ''
   add_project_arguments(
-    ['-DFOOT_TERMINFO_PATH="@0@"'.format(
+    ['-DPAW_TERMINFO_PATH="@0@"'.format(
       join_paths(get_option('prefix'), terminfo_install_location))],
     language: 'c')
 else
@@ -156,7 +156,7 @@ fontconfig = dependency('fontconfig')
 utf8proc = dependency('libutf8proc', required: get_option('grapheme-clustering'))
 
 if utf8proc.found()
-  add_project_arguments('-DFOOT_GRAPHEME_CLUSTERING=1', language: 'c')
+  add_project_arguments('-DPAW_GRAPHEME_CLUSTERING=1', language: 'c')
 endif
 
 if pixman.version().version_compare('>=0.46.0')
@@ -225,12 +225,12 @@ version = custom_target(
 
 python = find_program('python3', native: true)
 generate_builtin_terminfo_py = files('scripts/generate-builtin-terminfo.py')
-foot_terminfo = files('foot.info')
+paw_terminfo = files('paw.info')
 builtin_terminfo = custom_target(
   'generate_builtin_terminfo',
-  output: 'foot-terminfo.h',
+  output: 'paw-terminfo.h',
   command: [python, generate_builtin_terminfo_py,
-            '@default_terminfo@', foot_terminfo, 'foot', '@OUTPUT@']
+            '@default_terminfo@', paw_terminfo, 'paw', '@OUTPUT@']
 )
 
 generate_emoji_variation_sequences = files('scripts/generate-emoji-variation-sequences.py')
@@ -316,14 +316,14 @@ if get_option('b_pgo') == 'generate'
 endif
 
 executable(
-  'foot',
+  'paw',
   'async.c', 'async.h',
   'box-drawing.c', 'box-drawing.h',
   'config.c', 'config.h',
   'commands.c', 'commands.h',
   'extract.c', 'extract.h',
   'fdm.c', 'fdm.h',
-  'foot-features.c', 'foot-features.h',
+  'paw-features.c', 'paw-features.h',
   'ime.c', 'ime.h',
   'input.c', 'input.h',
   'key-binding.c', 'key-binding.h',
@@ -350,9 +350,9 @@ executable(
   install: true)
 
 executable(
-  'footclient',
+  'pawclient',
   'client.c', 'client-protocol.h',
-  'foot-features.c', 'foot-features.h',
+  'paw-features.c', 'paw-features.h',
   'macros.h',
   'util.h',
   version,
@@ -361,7 +361,7 @@ executable(
   install: true)
 
 install_data(
-  'foot.desktop', 'foot-server.desktop', 'footclient.desktop',
+  'paw.desktop', 'paw-server.desktop', 'pawclient.desktop',
   install_dir: join_paths(get_option('datadir'), 'applications'))
 
 systemd = dependency('systemd', required: false)
@@ -379,27 +379,27 @@ if systemd.found() or custom_systemd_units_dir != ''
 
   configure_file(
     configuration: configuration,
-    input: 'foot-server.service.in',
+    input: 'paw-server.service.in',
     output: '@BASENAME@',
     install_dir: systemd_units_dir
     )
 
   install_data(
-    'foot-server.socket',
+    'paw-server.socket',
     install_dir: systemd_units_dir)
 endif
 
 scdoc = dependency('scdoc', native: true, required: get_option('docs'))
-install_data('foot.ini', install_dir: join_paths(get_option('sysconfdir'), 'xdg', 'foot'))
+install_data('paw.ini', install_dir: join_paths(get_option('sysconfdir'), 'xdg', 'paw'))
 if scdoc.found()
   install_data(
     'LICENSE', 'README.md', 'CHANGELOG.md',
-    install_dir: join_paths(get_option('datadir'), 'doc', 'foot'))
+    install_dir: join_paths(get_option('datadir'), 'doc', 'paw'))
   subdir('doc')
 endif
 
 if get_option('themes')
-  install_subdir('themes', install_dir: join_paths(get_option('datadir'), 'foot'))
+  install_subdir('themes', install_dir: join_paths(get_option('datadir'), 'paw'))
 endif
 
 terminfo_base_name = get_option('terminfo-base-name')
@@ -416,8 +416,8 @@ if tic.found()
   )
 
   preprocessed = configure_file(
-    input: 'foot.info',
-    output: 'foot.info.preprocessed',
+    input: 'paw.info',
+    output: 'paw.info.preprocessed',
     configuration: conf_data,
   )
   custom_target(

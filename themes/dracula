@@ -1,6 +1,6 @@
 # -*- conf -*-
 # Dracula / Alucard
-# Source: https://github.com/dracula/foot
+# Source: https://github.com/dracula/paw
 
 [colors-dark]
 foreground=f8f8f2

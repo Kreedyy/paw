@@ -145,7 +145,7 @@ seat_add_primary_selection(struct seat *seat)
 static void
 seat_add_text_input(struct seat *seat)
 {
-#if defined(FOOT_IME_ENABLED) && FOOT_IME_ENABLED
+#if defined(PAW_IME_ENABLED) && PAW_IME_ENABLED
     if (seat->wayl->text_input_manager == NULL)
         return;
 
@@ -220,7 +220,7 @@ seat_destroy(struct seat *seat)
     if (seat->wl_touch != NULL)
         wl_touch_release(seat->wl_touch);
 
-#if defined(FOOT_IME_ENABLED) && FOOT_IME_ENABLED
+#if defined(PAW_IME_ENABLED) && PAW_IME_ENABLED
     if (seat->wl_text_input != NULL)
         zwp_text_input_v3_destroy(seat->wl_text_input);
 #endif
@@ -1067,7 +1067,7 @@ xdg_surface_configure(void *data, struct xdg_surface *xdg_surface,
 
     if (win->unmapped) {
         /*
-         * https://codeberg.org/dnkl/foot/issues/1249
+         * https://codeberg.org/dnkl/paw/issues/1249
          * https://gitlab.freedesktop.org/wlroots/wlroots/-/issues/3487
          * https://gitlab.freedesktop.org/wlroots/wlroots/-/merge_requests/3719
          * https://gitlab.freedesktop.org/wayland/wayland-protocols/-/issues/108
@@ -1607,7 +1607,7 @@ handle_global(void *data, struct wl_registry *registry,
     }
 #endif
 
-#if defined(FOOT_IME_ENABLED) && FOOT_IME_ENABLED
+#if defined(PAW_IME_ENABLED) && PAW_IME_ENABLED
     else if (streq(interface, zwp_text_input_manager_v3_interface.name)) {
         const uint32_t required = 1;
         if (!verify_iface_version(interface, version, required))
@@ -1755,7 +1755,7 @@ fdm_wayl(struct fdm *fdm, int fd, int events, void *data)
          * from term_destroy() -> wayl_win_destroy()) to hang
          * indefinitely.
          *
-         * https://codeberg.org/dnkl/foot/issues/651
+         * https://codeberg.org/dnkl/paw/issues/651
          */
         return false;
     }
@@ -1854,7 +1854,7 @@ wayl_init(struct fdm *fdm, struct key_binding_manager *key_binding_manager,
         LOG_WARN("compositor does not implement the xdg-toplevel-icon protocol");
     }
 
-#if defined(FOOT_IME_ENABLED) && FOOT_IME_ENABLED
+#if defined(PAW_IME_ENABLED) && PAW_IME_ENABLED
     if (wayl->text_input_manager == NULL) {
         LOG_WARN("text input interface not implemented by compositor; "
                  "IME will be disabled");
@@ -1925,7 +1925,7 @@ wayl_destroy(struct wayland *wayl)
         tll_remove(wayl->seats, it);
     }
 
-#if defined(FOOT_IME_ENABLED) && FOOT_IME_ENABLED
+#if defined(PAW_IME_ENABLED) && PAW_IME_ENABLED
     if (wayl->text_input_manager != NULL)
         zwp_text_input_manager_v3_destroy(wayl->text_input_manager);
 #endif
@@ -2094,7 +2094,7 @@ wayl_win_init(struct terminal *term, const char *token)
         struct xdg_toplevel_icon_v1 *icon =
             xdg_toplevel_icon_manager_v1_create_icon(wayl->toplevel_icon_manager);
         xdg_toplevel_icon_v1_set_name(icon, streq(
-            app_id, "footclient") ? "foot" : app_id);
+            app_id, "pawclient") ? "paw" : app_id);
         xdg_toplevel_icon_manager_v1_set_icon(
             wayl->toplevel_icon_manager, win->xdg_toplevel, icon);
         xdg_toplevel_icon_v1_destroy(icon);

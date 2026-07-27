@@ -4,7 +4,7 @@
 #define LOG_MODULE "dcs"
 #define LOG_ENABLE_DBG 0
 #include "log.h"
-#include "foot-terminfo.h"
+#include "paw-terminfo.h"
 #include "sixel.h"
 #include "util.h"
 #include "vt.h"
